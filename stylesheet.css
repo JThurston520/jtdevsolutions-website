@@ -1,0 +1,555 @@
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: "Space Grotesk", Arial, sans-serif;
+  color: rgb(255, 255, 255);
+}
+
+/* Background */
+#background-image-1 {
+  background-image: url("website-background-1.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Navbar/Header Styles */
+.navbar {
+  background: rgba(8, 15, 30, 0.85); /* Keeping your original background */
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 149, 255, 0.2);
+  box-shadow: 0 0 20px rgba(255, 89, 0, 0.15);
+  padding: 1rem;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.navbar-brand .logo{
+  margin-right: 10px;
+  height: 70px; /* Adjust this value to fit your navbar height */
+  width: auto; /* This maintains the aspect ratio */
+  filter: invert(1); /* This inverts the colors of the image*/
+  cursor: default;
+}
+
+.navbar-brand a {
+  cursor: default;
+}
+
+
+.navbar-text-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+}
+
+.navbar-text {
+  color: #ffffff !important;
+  margin: 0;
+  white-space: nowrap;
+  font-size: 1rem;
+}
+
+
+
+.nav-link {
+  color: rgb(255, 255, 255);
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+}
+
+.nav-link:hover {
+  color: #FF6600;
+  text-shadow: 0 0 10px rgb(255, 255, 255);
+}
+
+/* Section Containers */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Meet Me Section */
+#meetme {
+  background: rgba(8, 15, 30, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  transform: translate3d(0, 10px, 0);
+  transition: 0.9s ease-in-out;
+}
+
+#meetme img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+#meetme:hover {
+  transform: translate3d(0, -10px, 0);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* About Section */
+#about {
+  background: rgba(8, 15, 30, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  transform: translate3d(0, 10px, 0);
+  transition: 0.9s ease-in-out;
+}
+
+#about:hover {
+  transform: translate3d(0, -10px, 0);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Services Section */
+#services {
+  background: rgba(8, 15, 30, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  transform: translate3d(0, 10px, 0);
+  transition: 0.9s ease-in-out;
+}
+
+#services li {
+  text-align: left;
+  list-style: "-  ";
+}
+
+#services:hover {
+  transform: translate3d(0, -10px, 0);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+#pricing {
+  background: rgba(8, 15, 30, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 100%; /* Changed from 400px to allow full table width */
+  margin: 0 auto;
+  text-align: center;
+  transform: translate3d(0, 10px, 0);
+  transition: 0.9s ease-in-out;
+}
+
+#pricing:hover {
+  transform: translate3d(0, -10px, 0);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+.pricing-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 20px;
+  color: #ffffff; /* Set text color to white */
+}
+
+
+.pricing-table th, .pricing-table td {
+  border: none;
+  padding: 12px;
+  text-align: center;
+}
+
+
+.pricing-table th {
+  background-color: rgba(255, 255, 255, 0.1);
+  font-weight: bold;
+}
+
+.pricing-table tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.pricing-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.fa-check {
+  color: #28a745;
+}
+
+.pricing-note {
+  text-align: center;
+  margin-top: 20px;
+  color: #ffffff;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+
+/* Security Cards */
+.security-container {
+  padding: 2rem;
+}
+
+.card {
+  background: rgba(8, 15, 30, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 149, 255, 0.2);
+  box-shadow: 0 0 20px rgba(255, 89, 0, 0.15);
+  position: relative;
+  height: 200px;
+  transition: all 0.9s ease;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;
+  padding: 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+}
+
+.card-title {
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.initial {
+  color: #ffffff;
+  transition: opacity 0.3s ease;
+}
+
+.expanded-content {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  color: #ffffff;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  height: 400px;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover .expanded-content {
+  opacity: 1;
+  visibility: visible;
+}
+
+.card:hover .initial {
+  opacity: 0;
+}
+
+/* Footer */
+footer {
+  background: rgba(8, 15, 30, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 2rem;
+  text-align: center;
+}
+
+footer ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+footer a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+footer a:hover {
+  color: #FF6600;
+  text-shadow: 0 0 10px rgb(255, 255, 255);
+}
+
+#contact {
+  background: rgba(8, 15, 30, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  transform: translate3d(0, 10px, 0);
+  transition: 0.9s ease-in-out;
+}
+
+#contact:hover {
+  transform: translate3d(0, -10px, 0);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.contact-form {
+  margin-top: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 10px rgba(255, 89, 0, 0.15);
+}
+
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-group button {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  width: 100%;
+}
+
+.form-group button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Placeholder text color */
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Select element styling */
+.form-group select {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 1rem) center;
+  padding-right: 2.5rem;
+}
+
+.form-group select option {
+  background: rgba(8, 15, 30, 0.95);
+  color: #ffffff;
+  padding: 12px;
+}
+
+/* Hover state for select */
+.form-group select:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Focus state for select */
+.form-group select:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 10px rgba(255, 89, 0, 0.15);
+}
+
+/* Style for the placeholder option */
+.form-group select option[value=""] {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #contact {
+      max-width: 90%;
+      padding: 1.5rem;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .navbar-collapse {
+      background: rgba(8, 15, 30, 0.95);
+      padding: 1rem;
+      border-radius: 8px;
+  }
+
+  .nav-link {
+      text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  #meetme, #about, #services {
+      max-width: 90%;
+  }
+
+  .card {
+      height: auto;
+      min-height: 200px;
+  }
+
+  .card:hover {
+      height: auto;
+      min-height: 350px;
+  }
+
+  footer ul {
+      flex-direction: row;
+      gap: 1rem;
+      white-space: nowrap;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+      padding: 1rem;
+  }
+
+  .navbar-brand {
+      font-size: 1.2rem;
+  }
+
+  .card {
+      margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .navbar-text-container {
+      display: none;
+  }
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .pricing-table {
+      font-size: 14px;
+  }
+  
+  .pricing-table th, .pricing-table td {
+      padding: 8px;
+  }
+}
+
+
+@media screen and (max-width: 767px) {
+  #background-image-1 {
+      min-height: 100dvh; /* dynamic viewport height for mobile */
+      overflow: hidden; /* prevent any overflow */
+  }
+}
+
+
+@media screen and (max-width: 767px) {
+  footer {
+      padding: 1.5rem 1rem; /* Adjusted padding */
+  }
+
+  footer ul {
+      flex-wrap: nowrap; /* Allow items to wrap if needed */
+      gap: 1rem;
+      margin: 0.5rem 0; /* Reduced margin */
+  }
+
+  footer ul li {
+      padding: 0.25rem 0; /* Add some vertical spacing between items */
+  }
+
+  footer ul li a {
+      font-size: 0.9rem; /* Slightly smaller font size for mobile */
+  }
+}
+
+
+/* Utility Classes */
+.space-grotesk {
+  font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+}
