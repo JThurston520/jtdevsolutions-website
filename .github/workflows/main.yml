@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: HTML5 Validator
+      uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+      with:
+        root: .
+        
+    - name: Check HTML links
+      uses: untitaker/hyperlink@0.1.27
+      with:
+        args: ./*.html
+        
+    - name: Check file size
+      run: |
+        find . -type f -size +5M | while read file; do
+          echo "Error: $file is larger than 5MB"
+          exit 1
+        done
