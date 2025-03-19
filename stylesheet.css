@@ -20,7 +20,7 @@ body {
 
 /* Background */
 #background-image-1 {
-  background-image: url("website-background-1.jpg");
+  background-image: url("images/website-background-1.jpg");
   background-size: cover;
   background-attachment: fixed;
   min-height: 100vh;
