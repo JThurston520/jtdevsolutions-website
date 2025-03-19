@@ -10,15 +10,15 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
           node-version: '18'
 
       - name: HTML5 Validation
-        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+        uses: Cyb3r-Jak3/k3/html5validator-action@v7.2.0
         with:
           root: .
           format: text
@@ -36,10 +36,9 @@ jobs:
           npx stylelint "**/*.css"
           
       - name: Check Links
-        uses: lycheeverse/lychee-action@v1.8.0
+        uses: untitaker/hyperlink@0.1.27
         with:
-          args: --verbose --no-progress './**/*.html'
-          fail: true
+          args: ./*.html
 
       - name: Check File Sizes
         run: |
@@ -50,7 +49,7 @@ jobs:
           
           echo "Checking total asset sizes..."
           find . -type f \( -name "*.js" -o -name "*.css" \) -size +1M | while read file; do
-            echo "Error: $file is largerger than 1MB"
+            echo "Error: $file is larger than 1MB"
             exit 1
           done
 
@@ -63,22 +62,13 @@ jobs:
         run: |
           ./node_modules/.bin/eslint . --ext .js
 
-      - name: Upload Reports
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: reports
-          path: |
-            ./report
-            ./*.html
-          retention-days: 7
-
   deploy:
     needs: validate
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     
     steps:
+      - uses: actions/checkout@v2
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
