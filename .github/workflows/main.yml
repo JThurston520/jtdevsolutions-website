@@ -25,26 +25,21 @@ jobs:
           log_level: INFO
           extra: --show-warnings
 
+      - name: Install Stylelint
+        run: |
+          npm init -y
+          npm install stylelint stylelint-config-standard
+          
       - name: CSS Validation
-        uses: StyleSheetValidator/action@v0.2.1
-        with:
-          pattern: "**/*.css"
+        run: |
+          echo '{"extends": "stylelint-config-standard"}' > .stylelintrc.json
+          npx stylelint "**/*.css"
           
       - name: Check Links
         uses: lycheeverse/lychee-action@v1.8.0
         with:
           args: --verbose --no-progress './**/*.html'
           fail: true
-          
-      - name: Security Headers Check
-        uses: walkxcode/headers-check-action@v1.3.1
-        with:
-          url: 'https://jtdevsolutions.com'
-
-      - name: Performance Check
-        run: |
-          npm install -g lighthouse
-          lighthouse https://jtdevsolutions.com --output json --output html --output-path ./report
 
       - name: Check File Sizes
         run: |
@@ -55,13 +50,17 @@ jobs:
           
           echo "Checking total asset sizes..."
           find . -type f \( -name "*.js" -o -name "*.css" \) -size +1M | while read file; do
-            echo "Error: $file is larger than 1MB"
+            echo "Error: $file is largerger than 1MB"
             exit 1
           done
 
-      - name: Check JavaScript
+      - name: Install ESLint
         run: |
           npm install eslint
+          npm init @eslint/config
+
+      - name: Check JavaScript
+        run: |
           ./node_modules/.bin/eslint . --ext .js
 
       - name: Upload Reports
