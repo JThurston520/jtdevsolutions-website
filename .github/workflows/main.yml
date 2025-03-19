@@ -1,4 +1,4 @@
-name: CI
+name: Website CI
 
 on:
   push:
@@ -7,25 +7,87 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: HTML5 Validation
+        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+        with:
+          root: .
+          format: text
+          log_level: INFO
+          extra: --show-warnings
+
+      - name: CSS Validation
+        uses: StyleSheetValidator/action@v0.2.1
+        with:
+          pattern: "**/*.css"
+          
+      - name: Check Links
+        uses: lycheeverse/lychee-action@v1.8.0
+        with:
+          args: --verbose --no-progress './**/*.html'
+          fail: true
+          
+      - name: Security Headers Check
+        uses: walkxcode/headers-check-action@v1.3.1
+        with:
+          url: 'https://jtdevsolutions.com'
+
+      - name: Performance Check
+        run: |
+          npm install -g lighthouse
+          lighthouse https://jtdevsolutions.com --output json --output html --output-path ./report
+
+      - name: Check File Sizes
+        run: |
+          echo "Checking image sizes..."
+          find ./images -type f -size +500k | while read file; do
+            echo "Warning: $file is larger than 500KB"
+          done
+          
+          echo "Checking total asset sizes..."
+          find . -type f \( -name "*.js" -o -name "*.css" \) -size +1M | while read file; do
+            echo "Error: $file is larger than 1MB"
+            exit 1
+          done
+
+      - name: Check JavaScript
+        run: |
+          npm install eslint
+          ./node_modules/.bin/eslint . --ext .js
+
+      - name: Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: reports
+          path: |
+            ./report
+            ./*.html
+          retention-days: 7
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     
-    - name: HTML5 Validator
-      uses: Cyb3r-Jak3/html5validator-action@v7.2.0
-      with:
-        root: .
-        
-    - name: Check HTML links
-      uses: untitaker/hyperlink@0.1.27
-      with:
-        args: ./*.html
-        
-    - name: Check file size
-      run: |
-        find . -type f -size +5M | while read file; do
-          echo "Error: $file is larger than 5MB"
-          exit 1
-        done
+    steps:
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: pages publish --project-name=jtdevsolutions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
