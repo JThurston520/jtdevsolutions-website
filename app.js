@@ -98,3 +98,49 @@ addCircuitAnimation('about');
 addCircuitAnimation('services');
 addCircuitAnimation('pricing');
 addCircuitAnimation('contact');
+
+// Form Security
+function validateForm(event) {
+    event.preventDefault();
+    
+    // Sanitize inputs
+    const name = DOMPurify.sanitize(document.getElementById('name').value);
+    
+    // Check for suspicious patterns
+    const suspiciousPatterns = /[<>{}]/g;
+    if (suspiciousPatterns.test(name)) {
+        alert('Please enter a valid name');
+        return false;
+    }
+    
+    // Rate limiting
+    if (isRateLimited()) {
+        alert('Please wait before submitting again');
+        return false;
+    }
+    
+    // If all checks pass
+    document.getElementById('contact-form').submit();
+}
+
+// Rate limiting function
+const submissionTimes = [];
+function isRateLimited() {
+    const now = Date.now();
+    const timeWindow = 60000; // 1 minute
+    const maxSubmissions = 3;
+    
+    // Remove old submissions
+    while (submissionTimes.length > 0 && submissionTimes[0] < now - timeWindow) {
+        submissionTimes.shift();
+    }
+    
+    // Check if too many submissions
+    if (submissionTimes.length >= maxSubmissions) {
+        return true;
+    }
+    
+    // Add current submission time
+    submissionTimes.push(now);
+    return false;
+}
