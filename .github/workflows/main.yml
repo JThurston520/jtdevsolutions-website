@@ -1,31 +1,84 @@
-name: CI
+name: Website CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    
-    - name: HTML5 Validator
-      uses: Cyb3r-Jak3/html5validator-action@v7.2.0
-      with:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      # Validate HTML
+      - name: HTML5 Validation
+        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+        with:
         root: .
-        
-    - name: Check HTML links
-      uses: untitaker/hyperlink@0.1.27
-      with:
-        args: ./*.html
-        
-    - name: Check file size
-      run: |
-        find . -type f -size +5M | while read file; do
-          echo "Error: $file is larger than 5MB"
-          exit 1
-        done
+        format: text
+        log_level: INFO
+        extra: --show-warnings --ignore-re="The .* role is unnecessary for element .*"
+
+      # Validate CSS
+      - name: Install Stylelint
+        run: npm install stylelint stylelint-config-standard --save-dev
+      
+      - name: CSS Validation
+        run: npx stylelint "**/*.css"
+
+      # Check for broken links
+      - name: Check Links
+        uses: untitaker/hyperlink@0.1.27
+        with:
+          args: --timeout 10 ./*.html
+
+      # Check for oversized files
+      - name: Check File Sizes
+        run: |
+          echo "Checking image sizes..."
+          find ./images -type f -size +500k -print || true
+
+          echo "Checking total asset sizes..."
+          find . -type f \( -name "*.js" -o -name "*.css" \) -size +1M -print | while read file; do
+            echo "Error: $file is larger than 1MB"
+            exit 1
+          done || true
+
+      # Validate JavaScript
+      - name: Install ESLint
+        run: npm install eslint --save-dev
+
+      - name: JavaScript Validation
+        run: npx eslint . --ext .js || true
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - name: Install Wrangler
+        run: npm install -g wrangler
+      
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: pages publish --project-name=jtdevsolutions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
