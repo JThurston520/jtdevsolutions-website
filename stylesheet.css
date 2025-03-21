@@ -1,9 +1,3 @@
-:root {
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 2rem;
-}
-
 /* Base styles */
 * {
   margin: 0;
@@ -17,7 +11,6 @@ html {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
-  font-size: calc(14px + 0.390625vw);
 }
 
 body {
@@ -31,14 +24,11 @@ body {
   background-size: cover;
   background-attachment: fixed;
   min-height: 100vh;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
 }
 
 /* Navbar/Header Styles */
 .navbar {
-  background: rgba(8, 15, 30, 0.85);
+  background: rgba(8, 15, 30, 0.85); /* Keeping your original background */
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(0, 149, 255, 0.2);
   box-shadow: 0 0 20px rgba(255, 89, 0, 0.15);
@@ -51,17 +41,18 @@ body {
   padding: 0.5rem 1rem;
 }
 
-.navbar-brand .logo {
+.navbar-brand .logo{
   margin-right: 10px;
-  height: 70px;
-  width: auto;
-  filter: invert(1);
+  height: 70px; /* Adjust this value to fit your navbar height */
+  width: auto; /* This maintains the aspect ratio */
+  filter: invert(1); /* This inverts the colors of the image*/
   cursor: default;
 }
 
 .navbar-brand a {
   cursor: default;
 }
+
 
 .navbar-text-container {
   position: absolute;
@@ -76,6 +67,8 @@ body {
   white-space: nowrap;
   font-size: 1rem;
 }
+
+
 
 .nav-link {
   color: rgb(255, 255, 255);
@@ -93,7 +86,7 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--spacing-lg);
+  padding: 2rem;
 }
 
 /* Meet Me Section */
@@ -101,7 +94,7 @@ body {
   background: rgba(8, 15, 30, 0.85);
   backdrop-filter: blur(8px);
   border-radius: 10px;
-  padding: var(--spacing-lg);
+  padding: 2rem;
   max-width: 400px;
   margin: 0 auto;
   text-align: center;
@@ -113,7 +106,7 @@ body {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: 1rem;
 }
 
 #meetme:hover {
@@ -126,7 +119,7 @@ body {
   background: rgba(8, 15, 30, 0.85);
   backdrop-filter: blur(8px);
   border-radius: 10px;
-  padding: var(--spacing-lg);
+  padding: 2rem;
   max-width: 400px;
   margin: 0 auto;
   text-align: center;
@@ -144,7 +137,7 @@ body {
   background: rgba(8, 15, 30, 0.85);
   backdrop-filter: blur(8px);
   border-radius: 10px;
-  padding: var(--spacing-lg);
+  padding: 2rem;
   max-width: 400px;
   margin: 0 auto;
   text-align: center;
@@ -166,8 +159,8 @@ body {
   background: rgba(8, 15, 30, 0.85);
   backdrop-filter: blur(8px);
   border-radius: 10px;
-  padding: var(--spacing-lg);
-  max-width: 100%;
+  padding: 2rem;
+  max-width: 100%; /* Changed from 400px to allow full table width */
   margin: 0 auto;
   text-align: center;
   transform: translate3d(0, 10px, 0);
@@ -179,19 +172,22 @@ body {
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
+
 .pricing-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  margin-bottom: var(--spacing-lg);
-  color: #ffffff;
+  margin-bottom: 20px;
+  color: #ffffff; /* Set text color to white */
 }
+
 
 .pricing-table th, .pricing-table td {
   border: none;
-  padding: var(--spacing-md);
+  padding: 12px;
   text-align: center;
 }
+
 
 .pricing-table th {
   background-color: rgba(255, 255, 255, 0.1);
@@ -212,28 +208,29 @@ body {
 
 .pricing-note {
   text-align: center;
-  margin-top: var(--spacing-lg);
+  margin-top: 20px;
   color: #ffffff;
 }
 
 .btn-primary {
   display: inline-block;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: 10px 20px;
   background-color: #007bff;
   color: white;
   text-decoration: none;
   border-radius: 5px;
-  margin-top: var(--spacing-sm);
-  transition: background-color 0.3s easease;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
   background-color: #0056b3;
 }
 
+
 /* Security Cards */
 .security-container {
-  padding: var(--spacing-lg);
+  padding: 2rem;
 }
 
 .card {
@@ -261,7 +258,7 @@ body {
 .card-title {
   color: #ffffff;
   font-size: 1.5rem;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: 1rem;
 }
 
 .initial {
@@ -300,22 +297,16 @@ body {
 footer {
   background: rgba(8, 15, 30, 0.85);
   backdrop-filter: blur(8px);
-  padding: var(--spacing-lg) var(--spacing-md);
+  padding: 2rem;
   text-align: center;
 }
 
 footer ul {
   list-style: none;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-md);
-  padding: 0;
-}
-
-footer ul li {
-  margin: var(--spacing-sm) var(--spacing-sm);
+  gap: 2rem;
+  margin-top: 1rem;
 }
 
 footer a {
@@ -333,7 +324,7 @@ footer a:hover {
   background: rgba(8, 15, 30, 0.85);
   backdrop-filter: blur(8px);
   border-radius: 10px;
-  padding: var(--spacing-lg);
+  padding: 2rem;
   max-width: 400px;
   margin: 0 auto;
   text-align: center;
@@ -347,7 +338,7 @@ footer a:hover {
 }
 
 .contact-form {
-  margin-top: var(--spacing-lg);
+  margin-top: 2rem;
 }
 
 .form-group {
@@ -357,7 +348,7 @@ footer a:hover {
 
 .form-group label {
   display: block;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: 0.5rem;
   color: #ffffff;
 }
 
@@ -434,125 +425,127 @@ footer a:hover {
   padding: 12px;
 }
 
+/* Hover state for select */
 .form-group select:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
+/* Focus state for select */
 .form-group select:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.15);
   box-shadow: 0 0 10px rgba(255, 89, 0, 0.15);
 }
 
+/* Style for the placeholder option */
 .form-group select option[value=""] {
   color: rgba(255, 255, 255, 0.6);
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .navbar-text-container {
-    position: static;
-    transform: none;
-    text-align: center;
-    margin-top: var(--spacing-sm);
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #contact {
+      max-width: 90%;
+      padding: 1.5rem;
   }
 }
 
+/* Responsive Design */
 @media (max-width: 992px) {
   .navbar-collapse {
-    background: rgba(8, 15, 30, 0.95);
-    padding: var(--spacing-md);
-    border-radius: 8px;
+      background: rgba(8, 15, 30, 0.95);
+      padding: 1rem;
+      border-radius: 8px;
   }
 
   .nav-link {
-    text-align: center;
+      text-align: center;
   }
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: var(--spacing-md);
-  }
-
-  #meetme, #about, #services, #pricing, #contact {
-    max-width: 100%;
+  #meetme, #about, #services {
+      max-width: 90%;
   }
 
   .card {
-    height: auto;
-    min-height: 200px;
+      height: auto;
+      min-height: 200px;
   }
 
   .card:hover {
-    height: auto;
-    min-height: 350px;
+      height: auto;
+      min-height: 350px;
   }
 
-  .navbar-brand .logo {
-    height: 50px;
-  }
-
-  .pricing-table {
-    font-size: 14px;
-  }
-  
-  .pricing-table th, .pricing-table td {
-    padding: var(--spacing-sm);
+  footer ul {
+      flex-direction: row;
+      gap: 1rem;
+      white-space: nowrap;
   }
 }
 
 @media (max-width: 576px) {
-  body {
-    font-size: 14px;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-  }
-
   .container {
-    padding: var(--spacing-sm);
+      padding: 1rem;
   }
 
   .navbar-brand {
-    font-size: 1.2rem;
+      font-size: 1.2rem;
   }
 
   .card {
-    margin-bottom: var(--spacing-md);
+      margin-bottom: 1rem;
   }
 }
 
 @media (max-width: 991px) {
   .navbar-text-container {
-    display: none;
+      display: none;
   }
 }
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .pricing-table {
+      font-size: 14px;
+  }
+  
+  .pricing-table th, .pricing-table td {
+      padding: 8px;
+  }
+}
+
 
 @media screen and (max-width: 767px) {
   #background-image-1 {
-    min-height: 100dvh;
-    background-attachment: scroll;
+      min-height: 100dvh; /* dynamic viewport height for mobile */
+      overflow: hidden; /* prevent any overflow */
   }
+}
 
+
+@media screen and (max-width: 767px) {
   footer {
-    padding: 1.5rem var(--spacing-md);
+      padding: 1.5rem 1rem; /* Adjusted padding */
   }
 
   footer ul {
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
+      flex-wrap: nowrap; /* Allow items to wrap if needed */
+      gap: 1rem;
+      margin: 0.5rem 0; /* Reduced margin */
   }
 
   footer ul li {
-    padding: var(--spacing-sm) 0;
+      padding: 0.25rem 0; /* Add some vertical spacing between items */
   }
 
   footer ul li a {
-    font-size: 0.9rem;
+      font-size: 0.9rem; /* Slightly smaller font size for mobile */
   }
 }
+
 
 /* Utility Classes */
 .space-grotesk {
