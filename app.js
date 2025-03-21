@@ -1,29 +1,55 @@
+// Debounce function for performance
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
 function addCircuitAnimation(elementId) {
     const element = document.getElementById(elementId);
     if (!element) return;
 
-    element.addEventListener('mouseenter', function() {
-        const canvas = document.createElement('canvas');
-        canvas.style.position = 'absolute';
-        canvas.style.top = '0';
-        canvas.style.left = '0';
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
-        canvas.style.zIndex = '-1';
-        canvas.style.opacity = '0.2';
-        
-        this.appendChild(canvas);
-        
-        const ctx = canvas.getContext('2d');
-        canvas.width = this.offsetWidth;
-        canvas.height = this.offsetHeight;
+    let animationFrameId;
+    let isAnimating = false;
 
-        // Circuit parameters
-        const gridSize = 30;
+    const startAnimation = () => {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        const canvas = document.createElement('canvas');
+        canvas.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.2;
+            pointer-events: none;
+        `;
+        
+        element.appendChild(canvas);
+        
+        const ctx = canvas.getContext('2d', { alpha: true });
+        const updateCanvasSize = () => {
+            const rect = element.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+        };
+        updateCanvasSize();
+
+        // Optimized parameters
+        const gridSize = Math.max(30, Math.floor(canvas.width / 20));
         const nodes = [];
         const connections = [];
 
-        // Create grid of nodes
+        // Create grid efficiently
         for(let x = 0; x < canvas.width; x += gridSize) {
             for(let y = 0; y < canvas.height; y += gridSize) {
                 if(Math.random() > 0.5) {
@@ -32,115 +58,152 @@ function addCircuitAnimation(elementId) {
             }
         }
 
-        // Create connections
-        nodes.forEach(node => {
+        // Optimize connections creation
+        const maxConnections = Math.min(nodes.length, 50);
+        for(let i = 0; i < maxConnections; i++) {
+            const node = nodes[i];
             const nearNodes = nodes.filter(other => 
-                (Math.abs(other.x - node.x) <= gridSize && Math.abs(other.y - node.y) <= gridSize) &&
-                (other.x !== node.x || other.y !== node.y)
-            );
+                Math.abs(other.x - node.x) <= gridSize && 
+                Math.abs(other.y - node.y) <= gridSize &&
+                other !== node
+            ).slice(0, 3);
+
             if(nearNodes.length) {
                 const target = nearNodes[Math.floor(Math.random() * nearNodes.length)];
-                connections.push({start: node, end: target, progress: 0});
+                connections.push({
+                    start: node,
+                    end: target,
+                    progress: Math.random(),
+                    speed: 0.003 + Math.random() * 0.004
+                });
             }
-        });
+        }
 
         function animate() {
+            if (!isAnimating) return;
+            
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Draw connections
+            // Batch drawing operations
+            ctx.beginPath();
             ctx.strokeStyle = '#FF6600';
             ctx.lineWidth = 1;
+            
             connections.forEach(conn => {
-                ctx.beginPath();
                 ctx.moveTo(conn.start.x, conn.start.y);
                 ctx.lineTo(conn.end.x, conn.end.y);
-                ctx.stroke();
             });
+            ctx.stroke();
             
-            // Draw nodes
+            // Batch node drawing
+            ctx.beginPath();
             ctx.fillStyle = '#FF6600';
             nodes.forEach(node => {
-                ctx.beginPath();
+                ctx.moveTo(node.x, node.y);
                 ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
-                ctx.fill();
             });
+            ctx.fill();
             
-            // Animate pulses
+            // Optimize pulse animation
             ctx.strokeStyle = '#FFA500';
             connections.forEach(conn => {
                 const x = conn.start.x + (conn.end.x - conn.start.x) * conn.progress;
                 const y = conn.start.y + (conn.end.y - conn.start.y) * conn.progress;
+                
                 ctx.beginPath();
                 ctx.arc(x, y, 3, 0, Math.PI * 2);
                 ctx.stroke();
                 
-                conn.progress += 0.005;
+                conn.progress += conn.speed;
                 if(conn.progress > 1) conn.progress = 0;
             });
             
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
         }
 
-        animate();
-    });
+        // Handle resize efficiently
+        const handleResize = debounce(() => {
+            updateCanvasSize();
+        }, 250);
 
-    element.addEventListener('mouseleave', function() {
-        const canvas = this.querySelector('canvas');
+        window.addEventListener('resize', handleResize);
+        animate();
+    };
+
+    const stopAnimation = () => {
+        isAnimating = false;
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+        const canvas = element.querySelector('canvas');
         if(canvas) {
             canvas.remove();
         }
-    });
+    };
+
+    element.addEventListener('mouseenter', startAnimation);
+    element.addEventListener('mouseleave', stopAnimation);
 }
 
-// Apply the animation to both elements
-addCircuitAnimation('meetme');
-addCircuitAnimation('about');
-addCircuitAnimation('services');
-addCircuitAnimation('pricing');
-addCircuitAnimation('contact');
+// Form validation and security
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+    contactForm.addEventListener('submit', validateForm);
+}
 
-// Form Security
 function validateForm(event) {
     event.preventDefault();
     
-    // Sanitize inputs
-    const name = DOMPurify.sanitize(document.getElementById('name').value);
-    
-    // Check for suspicious patterns
-    const suspiciousPatterns = /[<>{}]/g;
-    if (suspiciousPatterns.test(name)) {
-        alert('Please enter a valid name');
+    if (!window.DOMPurify) {
+        console.error('DOMPurify is required for form validation');
         return false;
     }
     
-    // Rate limiting
+    const formData = new FormData(event.target);
+    const sanitizedData = {};
+    
+    for (let [key, value] of formData.entries()) {
+        sanitizedData[key] = DOMPurify.sanitize(value.trim());
+    }
+    
+    if (!isValidInput(sanitizedData)) {
+        alert('Please check your input and try again');
+        return false;
+    }
+    
     if (isRateLimited()) {
         alert('Please wait before submitting again');
         return false;
     }
     
-    // If all checks pass
-    document.getElementById('contact-form').submit();
+    event.target.submit();
 }
 
-// Rate limiting function
-const submissionTimes = [];
+function isValidInput(data) {
+    const suspiciousPatterns = /[<>{}]/g;
+    return !Object.values(data).some(value => suspiciousPatterns.test(value));
+}
+
+// Rate limiting with localStorage
 function isRateLimited() {
     const now = Date.now();
-    const timeWindow = 60000; // 1 minute
+    const timeWindow = 60000;
     const maxSubmissions = 3;
     
-    // Remove old submissions
-    while (submissionTimes.length > 0 && submissionTimes[0] < now - timeWindow) {
-        submissionTimes.shift();
-    }
+    let submissions = JSON.parse(localStorage.getItem('formSubmissions') || '[]');
+    submissions = submissions.filter(time => time > now - timeWindow);
     
-    // Check if too many submissions
-    if (submissionTimes.length >= maxSubmissions) {
+    if (submissions.length >= maxSubmissions) {
         return true;
     }
     
-    // Add current submission time
-    submissionTimes.push(now);
+    submissions.push(now);
+    localStorage.setItem('formSubmissions', JSON.stringify(submissions));
     return false;
 }
+
+// Initialize animations
+document.addEventListener('DOMContentLoaded', () => {
+    ['meetme', 'about', 'services-heading', 'pricing', 'contact']
+        .forEach(id => addCircuitAnimation(id));
+});
