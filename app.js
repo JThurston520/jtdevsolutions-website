@@ -104,8 +104,12 @@ addCircuitAnimation('contact');
 function validateForm(event) {
     event.preventDefault();
     
-    // Sanitize inputs
+    // Get form elements
+    const form = document.getElementById('contact-form');
     const name = DOMPurify.sanitize(document.getElementById('name').value);
+    const email = DOMPurify.sanitize(document.getElementById('email').value);
+    const service = DOMPurify.sanitize(document.getElementById('service').value);
+    const message = DOMPurify.sanitize(document.getElementById('message').value);
     
     // Check for suspicious patterns
     const suspiciousPatterns = /[<>{}]/g;
@@ -120,28 +124,26 @@ function validateForm(event) {
         return false;
     }
     
-    // If all checks pass
-    document.getElementById('contact-form').submit();
-}
+    // If all checks pass, submit form using fetch
+    fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Message sent successfully!');
+            form.reset();
+        } else {
+            alert('Error sending message. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error sending message. Please try again.');
+    });
 
-// Rate limiting function
-const submissionTimes = [];
-function isRateLimited() {
-    const now = Date.now();
-    const timeWindow = 60000; // 1 minute
-    const maxSubmissions = 3;
-    
-    // Remove old submissions
-    while (submissionTimes.length > 0 && submissionTimes[0] < now - timeWindow) {
-        submissionTimes.shift();
-    }
-    
-    // Check if too many submissions
-    if (submissionTimes.length >= maxSubmissions) {
-        return true;
-    }
-    
-    // Add current submission time
-    submissionTimes.push(now);
     return false;
 }
