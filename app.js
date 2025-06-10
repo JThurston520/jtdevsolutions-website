@@ -101,36 +101,54 @@ addCircuitAnimation('contact');
 addCircuitAnimation('contact');
 
 // Form Security
+const submissionTimes = [];
+
+function isRateLimited() {
+    const now = Date.now();
+    const timeWindow = 60000; // 1 minute
+    const maxSubmissions = 3;
+    
+    // Remove old submissions
+    while (submissionTimes.length > 0 && submissionTimes[0] < now - timeWindow) {
+        submissionTimes.shift();
+    }
+    
+    // Check if too many submissions
+    if (submissionTimes.length >= maxSubmissions) {
+        return true;
+    }
+    
+    // Add current submission time
+    submissionTimes.push(now);
+    return false;
+}
+
+// Form validation and submission
 function validateForm(event) {
     event.preventDefault();
     
-    // Get form elements
     const form = document.getElementById('contact-form');
-    const name = DOMPurify.sanitize(document.getElementById('name').value);
-    const email = DOMPurify.sanitize(document.getElementById('email').value);
-    const service = DOMPurify.sanitize(document.getElementById('service').value);
-    const message = DOMPurify.sanitize(document.getElementById('message').value);
+    const formData = new FormData(form);
+
+    // Basic validation
+    const name = form.elements['name'].value.trim();
+    const email = form.elements['email'].value.trim();
     
-    // Check for suspicious patterns
-    const suspiciousPatterns = /[<>{}]/g;
-    if (suspiciousPatterns.test(name)) {
-        alert('Please enter a valid name');
+    if (name === '' || email === '') {
+        alert('Please fill in all required fields');
         return false;
     }
-    
-    // Rate limiting
+
+    // Check rate limiting
     if (isRateLimited()) {
-        alert('Please wait before submitting again');
+        alert('Please wait a moment before submitting again');
         return false;
     }
-    
-    // If all checks pass, submit form using fetch
+
+    // Submit the form
     fetch(form.action, {
         method: 'POST',
-        body: new FormData(form),
-        headers: {
-            'Accept': 'application/json'
-        }
+        body: formData
     })
     .then(response => {
         if (response.ok) {
