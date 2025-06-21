@@ -144,6 +144,7 @@ function debounceSubmit(fn, delay) {
 
 // Rate limiting function
 const submissionTimes = [];
+
 function isRateLimited() {
     const now = Date.now();
     const timeWindow = 60000; // 1 minute
@@ -161,5 +162,48 @@ function isRateLimited() {
     
     // Add current submission time
     submissionTimes.push(now);
+    return false;
+}
+
+// Form validation and submission
+function validateForm(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('contact-form');
+    const formData = new FormData(form);
+
+    // Basic validation
+    const name = form.elements['name'].value.trim();
+    const email = form.elements['email'].value.trim();
+    
+    if (name === '' || email === '') {
+        alert('Please fill in all required fields');
+        return false;
+    }
+
+    // Check rate limiting
+    if (isRateLimited()) {
+        alert('Please wait a moment before submitting again');
+        return false;
+    }
+
+    // Submit the form
+    fetch(form.action, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Message sent successfully!');
+            form.reset();
+        } else {
+            alert('Error sending message. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error sending message. Please try again.');
+    });
+
     return false;
 }
