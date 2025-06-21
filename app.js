@@ -98,7 +98,6 @@ addCircuitAnimation('about');
 addCircuitAnimation('services');
 addCircuitAnimation('pricing');
 addCircuitAnimation('contact');
-addCircuitAnimation('contact');
 
 // Form Security
 function validateForm(event) {
@@ -106,7 +105,15 @@ function validateForm(event) {
     
     // Sanitize inputs
     const name = DOMPurify.sanitize(document.getElementById('name').value);
+    const email = DOMPurify.sanitize(document.getElementById('email').value);
+    const message = DOMPurify.sanitize(document.getElementById('message').value);   
     
+    // Basic validation
+    if (!email.includes('@') || suspiciousPatterns.test(message)) {
+    alert('Please enter valid inputs');
+    return false;
+}
+
     // Check for suspicious patterns
     const suspiciousPatterns = /[<>{}]/g;
     if (suspiciousPatterns.test(name)) {
@@ -115,11 +122,22 @@ function validateForm(event) {
     }
     
     // Rate limiting
-    if (isRateLimited()) {
-        alert('Please wait before submitting again');
-        return false;
-    }
-    
+    // if (isRateLimited()) {
+    //     alert('Please wait before submitting again');
+    //     return false;
+    // }
+
+    // Debounce submission to prevent multiple clicks
+    let debounceTimer;
+function debounceSubmit(fn, delay) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(fn, delay);
+}
+    // Attach the debounced submit handler
+    form.addEventListener('submit', (e) => {
+    debounceSubmit(() => validateForm(e), 500);
+});
+
     // If all checks pass
     document.getElementById('contact-form').submit();
 }

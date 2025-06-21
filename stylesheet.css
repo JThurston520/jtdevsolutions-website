@@ -341,20 +341,20 @@ footer a:hover {
   margin-top: 2rem;
 }
 
-.form-group {
+.mb-3 {
   margin-bottom: 1.5rem;
   text-align: left;
 }
 
-.form-group label {
+.mb-3 label {
   display: block;
   margin-bottom: 0.5rem;
   color: #ffffff;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+.mb-3 input,
+.mb-3 select,
+.mb-3 textarea {
   width: 100%;
   padding: 0.8rem;
   border: none;
@@ -365,21 +365,21 @@ footer a:hover {
   transition: all 0.3s ease;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
+.mb-3 input:focus,
+.mb-3 select:focus,
+.mb-3 textarea:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.15);
   box-shadow: 0 0 10px rgba(255, 89, 0, 0.15);
 }
 
-.form-group textarea {
+.mb-3 textarea {
   min-height: 120px;
   resize: vertical;
 }
 
-.form-group button {
-  background: rgba(255, 255, 255, 0.1);
+.mb-3 button {
+  background: #007bff;
   color: #ffffff;
   border: none;
   padding: 0.8rem 2rem;
@@ -390,20 +390,20 @@ footer a:hover {
   width: 100%;
 }
 
-.form-group button:hover {
-  background: rgba(255, 255, 255, 0.2);
+.d-grid button:hover {
+  background: #007bff;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Placeholder text color */
-.form-group input::placeholder,
-.form-group textarea::placeholder {
+.mb-3 input::placeholder,
+.mb-3 textarea::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
 
 /* Select element styling */
-.form-group select {
+.mb-3 select {
   width: 100%;
   padding: 0.8rem;
   border: none;
@@ -419,26 +419,26 @@ footer a:hover {
   padding-right: 2.5rem;
 }
 
-.form-group select option {
+.mb-3 select option {
   background: rgba(8, 15, 30, 0.95);
   color: #ffffff;
   padding: 12px;
 }
 
 /* Hover state for select */
-.form-group select:hover {
+.mb-3 select:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
 /* Focus state for select */
-.form-group select:focus {
+.mb-3 select:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.15);
   box-shadow: 0 0 10px rgba(255, 89, 0, 0.15);
 }
 
 /* Style for the placeholder option */
-.form-group select option[value=""] {
+.mb-3 select option[value=""] {
   color: rgba(255, 255, 255, 0.6);
 }
 
